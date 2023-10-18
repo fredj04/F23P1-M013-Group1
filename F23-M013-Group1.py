@@ -76,34 +76,31 @@ if __name__ == "__main__":
     main()
 # ######################################################################################################
 #4
-def text_to_binary(message):
-    binary = " ".join(format(ord(c), "08b") for c in message)
-    print("Binary representation:", binary)
-    return binary
-
-def txt2Binary(inputFile):
+def txt2Binary(inputFile, character_mapping):
     try:
         with open(inputFile, 'r') as input_file:
             text_content = input_file.read()
-        num_bytes = len(text_content)  # Calculate the number of characters
-        num_bits = num_bytes * 8  # Calculate the number of bits needed for the byte count
 
-        binary_content = text_to_binary(text_content)
+        binary_content = ""
+        while text_content:
+            binary_value, text_content = get_binary_value(text_content, character_mapping)
+            binary_content += binary_value
+
+        num_bits = len(binary_content)  # Calculate the number of bits
 
         outputFile = "BinOutput.txt"  # Output file name
 
-        # Write the binary values to the output file in the specified format
         with open(outputFile, 'w') as output_file:
             output_file.write(f"{num_bits}.{binary_content}")
 
         # Print the total number of bytes
-        print(f"Total number of bytes: {num_bits // 8}")
+        print(f"Total number of bits: {num_bits}")
         print(f"Binary conversion complete. Saved to {outputFile}")
     except FileNotFoundError:
         print(f"Error: File '{inputFile}' not found.")
 
-txt2Binary("input.txt")
-
+character_mapping = load_character_mapping("F23P1-M013-Group1.xlsx")
+txt2Binary("input.txt", character_mapping)
 
 
 # ######################################################################################################
