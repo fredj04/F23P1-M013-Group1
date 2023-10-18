@@ -104,53 +104,54 @@ txt2Binary("input.txt", character_mapping)
 
 
 # ######################################################################################################
-# #5
-# def Binary2txt(input_filename="BinOutput.txt"):
-#     try:
-#         with open(input_filename, 'r') as input_file:
-#             input_data = input_file.read()
+#5
+def Binary2txt(input_filename="BinOutput.txt"):
+    try:
+        with open(input_filename, 'r') as input_file:
+            input_data = input_file.read()
+        num_bits, binary_content = input_data.split('.') #split (.)
 
-#         # Split the input string
-#         num_bits, binary_content = input_data.split('.')
+        # Convert the binary content back to the original text
+        decoded_text = ""
+        while binary_content:
+            character = ""
+            for i in range(int(num_bits)):
+                character += binary_content[i]
+                if character in character_mapping.values():
+                    decoded_text += next(char for char, bin_val in character_mapping.items() if bin_val == character)
+                    binary_content = binary_content[int(num_bits):]
+                    break
 
-#         # Convert the binary content back to the original text
-#         decoded_text = ""
-#         while binary_content:
-#             character = ""
-#             for i in range(int(num_bits)):
-#                 character += binary_content[i]
-#                 #character_mapping from task2
-#                 if character in character_mapping.values():
-#                     decoded_text += next(char for char, bin_val in character_mapping.items() if bin_val == character)
-#                     binary_content = binary_content[int(num_bits):]
-#                     break
+        # Create the output filename
+        output_filename = "TextOutput.txt"
 
-#         # Create the output filename
-#         output_filename = "TextOutput.txt"
+        # Write the decoded text to the output file
+        with open(output_filename, 'w') as output_file:
+            output_file.write(decoded_text)
 
-#         # Write the decoded text to the output file
-#         with open(output_filename, 'w') as output_file:
-#             output_file.write(decoded_text)
+        print(f"Text decoding complete. Saved to {output_filename}")
+    except FileNotFoundError:
+        print(f"Error: File '{input_filename}' not found.")
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
 
-#         print(f"Text decoding complete. Saved to {output_filename}")
-#     except FileNotFoundError:
-#         print(f"Error: File '{input_filename}' not found.")
-#     except Exception as e:
-#         print(f"An error occurred: {str(e)}")
-
-# # Example usage:
-# Binary2txt("BinOutput.txt")
+# Example usage:
+Binary2txt("BinOutput.txt")
 
 # ######################################################################################################
-# #6
-# def are_files_identical(file1_path, file2_path="TextOutput.txt"):
-#     try:
-#         with open(file1_path, "r") as file1:
-#             content1 = file1.read()
+#6
+def are_files_identical(file1_path, file2_path="TextOutput.txt"):
+    try:
+        with open(file1_path, "r") as file1:
+            content1 = file1.read()
 
-#         with open(file2_path, "r") as file2:
-#             content2 = file2.read()
+        with open(file2_path, "r") as file2:
+            content2 = file2.read()
 
-#         return content1 == content2
-#     except FileNotFoundError:
-#         return False
+        return content1 == content2
+    except FileNotFoundError:
+        return False
+
+#usage txt1 and txt2
+result = are_files_identical("allChars.txt", "allChars.txt")
+print(result)
